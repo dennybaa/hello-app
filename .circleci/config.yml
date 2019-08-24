@@ -91,7 +91,7 @@ jobs:
       - checkout
       - setup_remote_docker
       - attach_workspace:
-          at: ./artifacts
+          at: ./dist
       - run:
           name: Build container
           command: |

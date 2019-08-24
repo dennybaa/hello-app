@@ -96,10 +96,10 @@ jobs:
           name: Build container
           command: |
             docker image build \
-              --build-arg version=${CIRCLE_TAG} -t ${NAMESPACE}/${PROJECT}
+              --build-arg version=${CIRCLE_TAG} -t ${NAMESPACE}/${PROJECT}:${CIRCLE_TAG}
       - run:
           name: Publish container
           command: |
             echo -n "${DOCKER_PASSWORD}" | docker login -u ${DOCKER_USERNAME} --password-stdin
-            docker image push ${NAMESPACE}/${PROJECT}
+            docker image push ${NAMESPACE}/${PROJECT}:${CIRCLE_TAG}
             docker logout

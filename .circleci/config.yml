@@ -96,7 +96,7 @@ jobs:
           name: Build container
           command: |
             docker image build \
-              --build-arg version=${CIRCLE_TAG} -t ${NAMESPACE}/${PROJECT}:${CIRCLE_TAG}
+              --build-arg version=${CIRCLE_TAG} -t ${NAMESPACE}/${PROJECT}:${CIRCLE_TAG} ./
       - run:
           name: Publish container
           command: |

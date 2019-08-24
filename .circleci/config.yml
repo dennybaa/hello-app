@@ -1,0 +1,71 @@
+version: 2.1
+
+executors:
+  default:
+    docker:
+      - image: circleci/golang:1.12
+    working_directory: /go/src/project
+
+enableTags: &enableTags
+  filters:
+    tags:
+      only: /.*/
+
+
+workflows:
+  version: 2.0
+  default:
+    jobs:
+      - linux-x86_64:
+          <<: *enableTags
+
+      - publish-artifacts:
+          requires:
+            - linux-x86_64
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v\d+\.\d+\.\d+/
+
+job: &job
+  executor: default
+  steps:
+    - checkout
+    - run:
+        name: Test
+        command: make test
+    - run:
+        name: Build
+        command: |
+          make dist
+          make dist-shasum
+
+    - persist_to_workspace:
+        root: /go/src/project/dist
+        paths:
+        - ./
+
+jobs:
+  linux-x86_64:
+    <<: *job
+    environment:
+      GOOS: linux
+      PLATFORM: x86_64
+
+  # darwin-x86_64:
+  #   <<: *job
+  #   environment:
+  #     GOOS: darwin
+  #     PLATFORM: x86_64
+
+  publish-artifacts:
+    docker:
+      - image: cibuilds/github:0.12
+    steps:
+      - attach_workspace:
+          at: ./artifacts
+      - run:
+          name: Publish artifacts
+          command: |
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} ${CIRCLE_TAG} ./artifacts/

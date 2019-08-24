@@ -9,7 +9,7 @@ func (app *App) defineRoutes() {
 	r := app.router
 
 	// /ping app (http server is running)
-	r.PUT("/ping", func(c *gin.Context) {
+	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "pong",
 		})

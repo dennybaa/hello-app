@@ -17,7 +17,8 @@ build:
 build-%:
 	GOOS=$* go build --tags "static" -v -ldflags '-s -w' -o $(DISTDIR)/helloapp-$*-$(PLATFORM)
 
-dist-shasum: dist
+dist-shasum: DISTDIR=./dist/
+dist-shasum:
 	cd $(DISTDIR) && sha256sum helloapp-$(GOOS)-$(PLATFORM) | tee helloapp-$(GOOS)-$(PLATFORM).sha256
 
 dist: DISTDIR=./dist/

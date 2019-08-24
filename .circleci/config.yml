@@ -28,6 +28,16 @@ workflows:
             tags:
               only: /^v\d+\.\d+\.\d+/
 
+      - publish-container:
+          requires:
+            - linux-x86_64
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v\d+\.\d+\.\d+/
+
+
 job: &job
   executor: default
   steps:
@@ -69,3 +79,27 @@ jobs:
           name: Publish artifacts
           command: |
             ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} ${CIRCLE_TAG} ./artifacts/
+
+  publish-container:
+    docker:
+      - image: stackfeed/circle-shell
+    environment:
+      - PROJECT=helloapp
+      - NAMESPACE=dennybaa
+      - PUSH_NAMESPACES=dennybaa
+    steps:
+      - checkout
+      - setup_remote_docker
+      - attach_workspace:
+          at: ./artifacts
+      - run:
+          name: Build container
+          command: |
+            docker image build \
+              --build-arg version=${CIRCLE_TAG} -t ${NAMESPACE}/${PROJECT}
+      - run:
+          name: Publish container
+          command: |
+            echo -n "${DOCKER_PASSWORD}" | docker login -u ${DOCKER_USERNAME} --password-stdin
+            docker image push ${NAMESPACE}/${PROJECT}
+            docker logout

@@ -1,0 +1,16 @@
+
+version: '3'
+
+services:
+  mongodb:
+    image: 'bitnami/mongodb:4.0.9-r11'
+    ports:
+      - "27017:27017"
+    volumes:
+      - 'mongodb_data:/bitnami'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+
+volumes:
+  mongodb_data:
+    driver: local

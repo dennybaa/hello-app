@@ -34,12 +34,12 @@ job: &job
     - checkout
     - run:
         name: Test
-        command: make test
+        command:
+          go get && make test
     - run:
         name: Build
         command: |
-          make dist
-          make dist-shasum
+          make dist && make dist-shasum
 
     - persist_to_workspace:
         root: /go/src/project/dist

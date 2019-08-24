@@ -86,7 +86,11 @@ func (app *App) serve() {
 
 	app.router = gin.Default()
 	app.defineRoutes()
-	app.router.Run()
+	err := app.router.Run()
+
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func (app *App) dbConnect() {

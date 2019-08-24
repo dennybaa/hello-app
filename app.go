@@ -51,12 +51,12 @@ func (app *App) initConf() {
 	}
 
 	// set db connection timeout in seconds
-	if timeout := os.Getenv("MONGODB_CONN_TIMEOUT"); timeout != "" {
+	if timeout := os.Getenv("MONGODB_CONNTIMEOUT"); timeout != "" {
 		var err error
 		app.dbConnectTimeout, err = strconv.Atoi(timeout)
 
 		if err != nil {
-			log.Fatal("Unable to use MONGODB_CONN_TIMEOUT env variable, number is expected, got: ", timeout)
+			log.Fatal("Unable to use MONGODB_CONNTIMEOUT env variable, number is expected, got: ", timeout)
 		}
 	} else {
 		app.dbConnectTimeout = 15

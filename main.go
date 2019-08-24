@@ -159,8 +159,7 @@ func getHelloUsername(app *App) gin.HandlerFunc {
 
 // Start the appliction
 func main() {
-	var app *App
-	app = new(App)
+	app := new(App)
 	app.initConf()
 	app.dbConnect()
 	app.serve()

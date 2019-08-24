@@ -15,9 +15,6 @@ import (
 // AppEnv type
 type AppEnv int
 
-// RouterFunc type
-type RouterFunc func(router *gin.Engine)
-
 const (
 	DevApp AppEnv = 0 + iota
 	ProdApp
@@ -112,6 +109,9 @@ func (app *App) dbConnect() {
 	case <-ctx.Done():
 		log.Fatal("Connection to MongoDB timed out!")
 	default:
+		if err != nil && app.appEnv != DevApp {
+			log.Fatal(err)
+		}
 		log.Println("Connected to MongoDB!")
 	}
 

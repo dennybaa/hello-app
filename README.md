@@ -2,7 +2,7 @@
 
 # helloapp a simple Golang REST api exampe
 
-hellapp creates a user in the database (MongoDB is used) and stores his date of birth. Notable it greats a user and provides days left to his birthday.
+hellapp creates a user in the database (MongoDB is used) and stores his date of birth. Notably it greats a user and provides days left to his birthday.
 
 
 ## Endpoints
@@ -19,7 +19,7 @@ curl -XPUT -d'{"dateofbirth": "1980-10-05"}' http://localhost:8080/hello/foobar
 
 ### `/hello/:username` GET
 
-Creates or updates a user
+Outputs days left to user's birthday.
 
 ```bash
 curl http://localhost:8080/hello/foobar

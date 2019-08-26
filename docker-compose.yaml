@@ -12,7 +12,7 @@ services:
       - ALLOW_EMPTY_PASSWORD=yes
 
   app:
-    image: dennybaa/helloapp:v0.1.1
+    image: dennybaa/helloapp:v0.1.3
     ports:
       - "3030:8080"
     environment:
